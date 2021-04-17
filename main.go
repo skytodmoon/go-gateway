@@ -25,6 +25,7 @@ var clientId string = "192.168.****"
 var subTopic string = "/" + productKey + "/" + deviceName + "/user/get"
 var pubTopic string = "/" + productKey + "/" + deviceName + "/user/update"
 
+// 设置MQTT登录信息验证结构体
 type AuthInfo struct {
 	password, username, mqttClientId string
 }
