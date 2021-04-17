@@ -8,13 +8,10 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
-	"time"
 
 	serial "github.com/tarm/serial"
 
 	"gopkg.in/ini.v1"
-
-	MQTT "github.com/eclipse/paho.mqtt.golang"
 )
 
 var TOPIC = make(map[string]string)
@@ -144,7 +141,7 @@ func main() {
 					if err != nil {
 						log.Fatal(err)
 					}
-					fmt.Printf("%q", rs232_buf[:n])
+					fmt.Printf("something get.....%q", rs232_buf[:n])
 				}
 				com_rs232 = cfg.Section("COM").Key("rs232_enable").MustBool()
 			}
@@ -224,48 +221,48 @@ func main() {
 		}
 	}()
 
-	clientId := cfg.Section(("MQTT")).Key("server_addr").String()
-	productKey := cfg.Section("MQTT").Key("product_key").String()
-	deviceName := cfg.Section("MQTT").Key("device_name").String()
-	deviceSecret := cfg.Section("MQTT").Key("device_secret").String()
-	timeStamp := cfg.Section("MQTT").Key("mqtt_timestamp").String()
+	// clientId := cfg.Section(("MQTT")).Key("server_addr").String()
+	// productKey := cfg.Section("MQTT").Key("product_key").String()
+	// deviceName := cfg.Section("MQTT").Key("device_name").String()
+	// deviceSecret := cfg.Section("MQTT").Key("device_secret").String()
+	// timeStamp := cfg.Section("MQTT").Key("mqtt_timestamp").String()
 
-	// 设置登录代理服务器地址
-	var raw_broker bytes.Buffer
-	raw_broker.WriteString("tls://")
-	raw_broker.WriteString(productKey)
-	raw_broker.WriteString(".iot-as-mqtt.cn-shanghai.aliyuncs.com:1883")
-	opts := MQTT.NewClientOptions().AddBroker(raw_broker.String())
+	// // 设置登录代理服务器地址
+	// var raw_broker bytes.Buffer
+	// raw_broker.WriteString("tls://")
+	// raw_broker.WriteString(productKey)
+	// raw_broker.WriteString(".iot-as-mqtt.cn-shanghai.aliyuncs.com:1883")
+	// opts := MQTT.NewClientOptions().AddBroker(raw_broker.String())
 
-	// 计算出加密后的登录信息
-	auth := calculate_sign(clientId, productKey, deviceName, deviceSecret, timeStamp)
-	opts.SetClientID(auth.mqttClientId)
-	opts.SetUsername(auth.username)
-	opts.SetPassword(auth.password)
-	opts.SetKeepAlive(60 * 2 * time.Second)
-	//	opts.SetDefaultPublishHandler(f)
+	// // 计算出加密后的登录信息
+	// auth := calculate_sign(clientId, productKey, deviceName, deviceSecret, timeStamp)
+	// opts.SetClientID(auth.mqttClientId)
+	// opts.SetUsername(auth.username)
+	// opts.SetPassword(auth.password)
+	// opts.SetKeepAlive(60 * 2 * time.Second)
+	// //	opts.SetDefaultPublishHandler(f)
 
-	serial_port := cfg.Section("COM").Key("rs485_port").String()
-	serial_baud := cfg.Section("COM").Key("rs485_baud").MustInt()
-	fmt.Println("RS485 info:", serial_port, "baudrate is :", serial_baud)
+	// serial_port := cfg.Section("COM").Key("rs485_port").String()
+	// serial_baud := cfg.Section("COM").Key("rs485_baud").MustInt()
+	// fmt.Println("RS485 info:", serial_port, "baudrate is :", serial_baud)
 
-	c := &serial.Config{Name: serial_port, Baud: serial_baud}
-	s, err := serial.OpenPort(c)
+	// c := &serial.Config{Name: serial_port, Baud: serial_baud}
+	// s, err := serial.OpenPort(c)
 
-	if err != nil {
-		log.Fatal(err)
-	}
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	serial_cmd1 := cfg.Section("CMD").Key("cmd").String()
-	fmt.Println("the sting will send", serial_cmd1)
-	s.Write(([]byte(serial_cmd1)))
+	// serial_cmd1 := cfg.Section("CMD").Key("cmd").String()
+	// fmt.Println("the sting will send", serial_cmd1)
+	// s.Write(([]byte(serial_cmd1)))
 
-	serial_cmd2 := cfg.Section("CMD").Key("cmd2").String()
-	if serial_cmd2 == "" {
-		fmt.Println("nothing to be show in cmd2")
-	} else {
-		fmt.Println("there is sth inside")
-	}
+	// serial_cmd2 := cfg.Section("CMD").Key("cmd2").String()
+	// if serial_cmd2 == "" {
+	// 	fmt.Println("nothing to be show in cmd2")
+	// } else {
+	// 	fmt.Println("there is sth inside")
+	// }
 
 	// //获取配置文件中的配置项
 	// id, err := cfg.String("COM", "COMID")
