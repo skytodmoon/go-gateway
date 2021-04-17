@@ -10,7 +10,7 @@ import (
 	"os"
 	"time"
 
-	serial "github.com/tarm/goserial"
+	serial "github.com/tarm/serial"
 
 	"gopkg.in/ini.v1"
 
@@ -20,10 +20,10 @@ import (
 var TOPIC = make(map[string]string)
 
 // set timestamp, clientid, subscribe topic and publish topic
-var timeStamp string = "1528018257135"
-var clientId string = "192.168.****"
-var subTopic string = "/" + productKey + "/" + deviceName + "/user/get"
-var pubTopic string = "/" + productKey + "/" + deviceName + "/user/update"
+// var timeStamp string = "1528018257135"
+// var clientId string = "192.168.****"
+// var subTopic string = "/" + productKey + "/" + deviceName + "/user/get"
+// var pubTopic string = "/" + productKey + "/" + deviceName + "/user/update"
 
 // 设置MQTT登录信息验证结构体
 type AuthInfo struct {
@@ -68,7 +68,8 @@ func show_logo() {
 	fmt.Println(string(logo_buf))
 }
 
-func creat_default_config() {
+// 加载默认配置文件
+func load_default_config() {
 	file, err := os.Create("config/config.ini")
 
 	if err != nil {
@@ -80,7 +81,6 @@ func creat_default_config() {
 	file.WriteString(string(buf))
 	fmt.Println(string(buf))
 	file.Close()
-
 }
 
 func main() {
@@ -88,18 +88,141 @@ func main() {
 	show_logo()
 
 	// 查找并打开配置文件
-	_, err := os.Open("config.ini")
+	_, err := os.Open("config/config.ini")
 	if err != nil {
 		fmt.Println("Can't find config.ini, will create a default one")
-		creat_default_config()
+		load_default_config()
 	}
 
 	// 打开配置文件
-	cfg, err := ini.Load("config.ini")
+	cfg, err := ini.Load("config/config.ini")
 	if err != nil {
 		fmt.Printf("Fail to read file: %v", err)
 		os.Exit(1)
 	}
+
+	go func() {
+		// 判断 RS232 是否是开启
+		com_rs232 := cfg.Section("COM").Key("rs232_enable").MustBool()
+
+		if com_rs232 != true {
+			fmt.Println("COM RS232 is disabled.")
+		} else {
+			rs232_port := cfg.Section("COM").Key("rs232_port").String()
+			rs232_baud := cfg.Section("COM").Key("rs232_baud").MustInt()
+			rs232_databits := cfg.Section("COM").Key("rs232_databits").String()
+			rs232_stopbits := cfg.Section("COM").Key("rs232_stopbits").String()
+
+			// RS232缓存
+			rs232_buf := make([]byte, 128)
+
+			// 显示 RS232 信息
+			fmt.Printf("RS232 port is: %s \r\n", rs232_port)
+			fmt.Printf("RS232 baud is: %d \r\n", rs232_baud)
+			fmt.Printf("RS232 databits is: %s \r\n", rs232_databits)
+			fmt.Printf("RS232 stopbits is: %s \r\n", rs232_stopbits)
+
+			// 打开 端口
+			c := &serial.Config{
+				Name:        rs232_port,
+				Baud:        rs232_baud,
+				ReadTimeout: 1,
+				Size:        0,
+				Parity:      0,
+				StopBits:    1,
+			}
+			s, err := serial.OpenPort(c)
+
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			// 循环 RS232 接口读取 POLL,读取周期1s
+			for {
+				if com_rs232 != false {
+					n, err := s.Read(rs232_buf)
+					if err != nil {
+						log.Fatal(err)
+					}
+					fmt.Printf("%q", rs232_buf[:n])
+				}
+				com_rs232 = cfg.Section("COM").Key("rs232_enable").MustBool()
+			}
+		}
+	}()
+
+	go func() {
+		// 判断 RS485 1 是否是开启
+		com_rs485_1 := cfg.Section("COM").Key("rs485_1_enable").MustBool()
+
+		if com_rs485_1 != true {
+			fmt.Println("COM RS485 1 is disabled.")
+		} else {
+			rs485_1_port := cfg.Section("COM").Key("rs485_1_port").String()
+			rs485_1_baud := cfg.Section("COM").Key("rs485_1_baud").MustInt64()
+			rs485_1_databits := cfg.Section("COM").Key("rs485_1_databits").String()
+			rs485_1_stopbits := cfg.Section("COM").Key("rs485_1_stopbits").String()
+
+			// RS485 1 缓存
+			modbus_buf_1 := make([]byte, 128)
+
+			// 显示 RS485 信息
+			fmt.Printf("RS485 1 port is: %s \r\n", rs485_1_port)
+			fmt.Printf("RS485 1 baud is: %d \r\n", rs485_1_baud)
+			fmt.Printf("RS485 1 databits is: %s \r\n", rs485_1_databits)
+			fmt.Printf("RS485 1 stopbits is: %s \r\n", rs485_1_stopbits)
+			fmt.Printf("RS485 1 buffer size is: %d \r\n", len(modbus_buf_1))
+
+			modbus_mode_1 := cfg.Section("MODBUS").Key("modbus_1_mode").String()
+
+			if modbus_mode_1 == "1" {
+				fmt.Println("MODBUS 1 MODE SET TO RTU")
+			} else if modbus_mode_1 == "2" {
+				fmt.Println("MODBUS 1 MODE SET TO ASCII")
+			} else if modbus_mode_1 == "3" {
+				fmt.Println("MODBUS 1 MODE SET TO TCP")
+			} else {
+				fmt.Println("MODBUS 1 MODE error!")
+			}
+		}
+	}()
+
+	go func() {
+		// 判断 RS485 2 是否是开启
+		com_rs485_2 := cfg.Section("COM").Key("rs485_2_enable").MustBool()
+
+		if com_rs485_2 != true {
+			fmt.Println("COM RS485 2 is disabled.")
+		} else {
+			rs485_2_port := cfg.Section("COM").Key("rs485_2_port").String()
+			rs485_2_baud := cfg.Section("COM").Key("rs485_2_baud").MustInt64()
+			rs485_2_databits := cfg.Section("COM").Key("rs485_2_databits").String()
+			rs485_2_stopbits := cfg.Section("COM").Key("rs485_2_stopbits").String()
+
+			// RS485 2 缓存
+			modbus_buf_2 := make([]byte, 128)
+
+			// 显示 RS485 信息
+			fmt.Printf("RS485 2 port is: %s \r\n", rs485_2_port)
+			fmt.Printf("RS485 2 baud is: %d \r\n", rs485_2_baud)
+			fmt.Printf("RS485 2 databits is: %s \r\n", rs485_2_databits)
+			fmt.Printf("RS485 2 stopbits is: %s \r\n", rs485_2_stopbits)
+			fmt.Printf("RS485 2 buffer size is: %d \r\n", len(modbus_buf_2))
+
+			modbus_mode_2 := cfg.Section("MODBUS").Key("modbus_2_mode").String()
+
+			if modbus_mode_2 == "1" {
+				fmt.Println("MODBUS 2 MODE SET TO RTU")
+			} else if modbus_mode_2 == "2" {
+				fmt.Println("MODBUS 2 MODE SET TO ASCII")
+			} else if modbus_mode_2 == "3" {
+				fmt.Println("MODBUS 2 MODE SET TO TCP")
+			} else {
+				fmt.Println("MODBUS 2 MODE error!")
+			}
+
+		}
+	}()
 
 	clientId := cfg.Section(("MQTT")).Key("server_addr").String()
 	productKey := cfg.Section("MQTT").Key("product_key").String()
