@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"time"
 
 	serial "github.com/tarm/serial"
 
@@ -98,6 +99,13 @@ func main() {
 		os.Exit(1)
 	}
 
+	// jcfg, err := json.Marshal(cfg)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// } else {
+	// 	fmt.Println(jcfg)
+	// }
+
 	go func() {
 		// 判断 RS232 是否是开启
 		com_rs232 := cfg.Section("COM").Key("rs232_enable").MustBool()
@@ -142,6 +150,7 @@ func main() {
 						log.Fatal(err)
 					}
 					fmt.Printf("something get.....%q", rs232_buf[:n])
+					time.Sleep(time.Millisecond)
 				}
 				com_rs232 = cfg.Section("COM").Key("rs232_enable").MustBool()
 			}
@@ -181,6 +190,7 @@ func main() {
 			} else {
 				fmt.Println("MODBUS 1 MODE error!")
 			}
+			time.Sleep(time.Millisecond)
 		}
 	}()
 
@@ -217,7 +227,7 @@ func main() {
 			} else {
 				fmt.Println("MODBUS 2 MODE error!")
 			}
-
+			time.Sleep(time.Millisecond)
 		}
 	}()
 
