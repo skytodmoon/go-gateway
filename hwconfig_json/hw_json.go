@@ -2,7 +2,6 @@ package hwconfig_json
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"os"
 )
@@ -43,41 +42,19 @@ type Modbus_config struct {
 }
 
 // 解析 hwconfig.json 文件
-func Hw_read_json() {
+func Hw_read_json(s interface{}) error {
 
 	file_json, err := os.ReadFile("config/hwconfig.json")
 	if err != nil {
 		log.Fatal(err)
-		return
+		return err
 	}
 
-	// 读取并解析 RS232 配置
-	rs232_json := Com_rs232{}
-	rs485_1_json := Com_rs485_1{}
-	rs485_2_json := Com_rs485_2{}
-	modbus_json := Modbus_config{}
-
-	err = json.Unmarshal(file_json, &rs232_json)
+	// 解析 JSON 配置文件并放回到 s 结构体中
+	err = json.Unmarshal(file_json, &s)
 	if err != nil {
 		log.Fatal(err)
-	} else {
-		err = json.Unmarshal(file_json, &rs485_1_json)
+		return err
 	}
-
-	if err != nil {
-		log.Fatal(err)
-	} else {
-		err = json.Unmarshal(file_json, &rs485_2_json)
-	}
-
-	if err != nil {
-		log.Fatal(err)
-	} else {
-		err = json.Unmarshal(file_json, &modbus_json)
-	}
-
-	fmt.Println(rs232_json)
-	fmt.Println(rs485_1_json)
-	fmt.Println(rs485_2_json)
-	fmt.Println(modbus_json)
+	return nil
 }

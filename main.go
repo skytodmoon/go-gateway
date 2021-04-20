@@ -14,7 +14,7 @@ import (
 
 	"gopkg.in/ini.v1"
 
-	"main/hwconfig_json"
+	"main/modbus_mod"
 )
 
 var TOPIC = make(map[string]string)
@@ -108,7 +108,10 @@ func main() {
 	// 	fmt.Println(jcfg)
 	// }
 
-	hwconfig_json.Hw_read_json()
+	err = modbus_mod.Modbus_init()
+	if err != nil {
+		fmt.Println("mb init error~")
+	}
 
 	go func() {
 		// 判断 RS232 是否是开启

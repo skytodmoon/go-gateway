@@ -1,4 +1,5 @@
 {
+    
     "modbus_mode":"rtu",
     "modbus_device_id":"77",
     
@@ -19,5 +20,8 @@
     "rs485_2_port":"/dev/ttymxc4",
     "rs485_2_baudrate":"9600",
     "rs485_2_databits":"8",
-    "rs485_2_stopbits":"0"
+    "rs485_2_stopbits":"0",
+
+    "can_enable":"false",
+    "can_port":"/dev/can0"
 }
