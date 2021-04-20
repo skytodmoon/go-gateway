@@ -13,6 +13,8 @@ import (
 	serial "github.com/tarm/serial"
 
 	"gopkg.in/ini.v1"
+
+	"main/hwconfig_json"
 )
 
 var TOPIC = make(map[string]string)
@@ -105,6 +107,8 @@ func main() {
 	// } else {
 	// 	fmt.Println(jcfg)
 	// }
+
+	hwconfig_json.Hw_read_json()
 
 	go func() {
 		// 判断 RS232 是否是开启
