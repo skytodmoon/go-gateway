@@ -37,6 +37,7 @@ type Com_rs485_2 struct {
 }
 
 type Modbus_config struct {
+	Modbus_enable    interface{} `json:"modbus_enable"`
 	Modbus_mode      interface{} `json:"modbus_mode"`
 	Modbus_device_id interface{} `json:"modbus_device_id"`
 }
