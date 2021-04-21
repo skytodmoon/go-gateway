@@ -24,7 +24,7 @@ var connectLostHandler mqtt_v3.ConnectionLostHandler = func(client mqtt_v3.Clien
 func mqtt_sub(client mqtt_v3.Client, topic string) {
 	token := client.Subscribe(topic, 1, nil)
 	token.Wait()
-	fmt.Printf("Subscribed to topic %s", topic)
+	fmt.Printf("Subscribed to topic %s \r\n", topic)
 }
 
 func mqtt_pub(client mqtt_v3.Client) {

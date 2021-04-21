@@ -6,32 +6,47 @@
     "sys_fw_flag_update":false,
     
     "modbus_enable":true,
-    "modbus_mode":"tcp",
+    "modbus_mode":"rtu",
+    "modbus_timeout":1,
     "modbus_device_id":"77",
     "modbus_tcp_addr":"192.168.1.14",
     "modbus_tcp_port":"139",
+
+    "modbus_slave_id_1":13,
+    "modbus_slave_id_2":14,
+    "modbus_slave_id_3":14,
+    "modbus_slave_id_4":14,
+    "modbus_slave_id_5":14,
+    "modbus_slave_id_6":14,
+
+
     
 
     "rs232_enable":true,
     "rs232_port":"/dev/ttymxc0",
-    "rs232_baudrate":"115200",
-    "rs232_databits":"8",
-    "rs232_stopbits":"0",
+    "rs232_baudrate":115200,
+    "rs232_databits":8,
+    "rs232_stopbits":0,
+    "rs232_parity":"N",
 
     "rs485_1_enable":true,
-    "rs485_1_port":"/dev/ttymxc2",
-    "rs485_1_baudrate":"9600",
-    "rs485_1_databits":"8",
-    "rs485_1_stopbits":"0",
+    "rs485_1_port":"COM14",
+    "rs485_1_baudrate":9600,
+    "rs485_1_databits":8,
+    "rs485_1_stopbits":0,
+    "rs485_1_parity":"N",
 
     "rs485_2_enable":true,
     "rs485_2_port":"/dev/ttymxc4",
-    "rs485_2_baudrate":"9600",
-    "rs485_2_databits":"8",
-    "rs485_2_stopbits":"0",
+    "rs485_2_baudrate":9600,
+    "rs485_2_databits":8,
+    "rs485_2_stopbits":0,
+    "rs485_2_parity":"N",
 
     "can_enable":false,
     "can_port":"/dev/can0",
+    "can_baudrate":115200,
+    "can_mode":"std",
 
     "led_enable":false,
 
@@ -72,6 +87,7 @@
     "mqtt_user_name":"admin",
     "mqtt_user_pass":"pass",
 
-    "mqtt_topic":"topic_test"
+    "mqtt_topic":"topic_test",
+    "mqtt_keepalive":60
 
 }

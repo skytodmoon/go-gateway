@@ -6,6 +6,7 @@ import (
 	"main/hwconfig_json"
 	"time"
 
+	"github.com/goburrow/serial"
 	modbus "github.com/thinkgos/gomodbus/v2"
 )
 
@@ -72,20 +73,37 @@ func Modbus_init() error {
 
 			fmt.Println("连接成功，开始工作...")
 			for {
-				_, err := client.ReadCoils(1, 0, 10)
+				results, err := client.ReadHoldingRegisters(1, 1, 10)
 				if err != nil {
 					fmt.Println(err.Error())
 				}
 
-				//	fmt.Printf("ReadDiscreteInputs %#v\r\n", results)
+				fmt.Printf("ReadDiscreteInputs %#v\r\n", results)
 
 				time.Sleep(time.Second * 2)
 			}
 
 		} else if mb_config.Modbus_mode == "rtu" {
 			fmt.Println("Modbus 采用 RTU 协议通信")
+
 			// 开始启动 Modbus 的 RTU 模式进行连接
-			p := modbus.NewRTUClientProvider()
+			p := modbus.NewRTUClientProvider(modbus.WithEnableLogger(),
+				modbus.WithSerialConfig(serial.Config{
+					Address:  rs485_1_config.Com_port,
+					BaudRate: rs485_1_config.Com_baudrate,
+					DataBits: rs485_1_config.Com_databits,
+					StopBits: rs485_1_config.Com_stopbits,
+					Parity:   rs485_1_config.Com_parity,
+					Timeout:  modbus.SerialDefaultTimeout,
+					RS485: serial.RS485Config{
+						Enabled:            false,
+						DelayRtsBeforeSend: 0,
+						DelayRtsAfterSend:  0,
+						RtsHighDuringSend:  false,
+						RtsHighAfterSend:   false,
+						RxDuringTx:         false,
+					},
+				}))
 
 			client := modbus.NewClient(p)
 			err := client.Connect()
@@ -96,21 +114,37 @@ func Modbus_init() error {
 			defer client.Close()
 
 			fmt.Println("连接成功，开始工作...")
-			// for {
-			// 	_, err := client.ReadCoils(3, 0, 10)
-			// 	if err != nil {
-			// 		fmt.Println(err.Error())
-			// 	}
+			for {
+				results, err := client.ReadHoldingRegisters(mb_config.Modbus_slave_id_1, 1, 1)
+				if err != nil {
+					fmt.Println(err.Error())
+				}
 
-			// 	//	fmt.Printf("ReadDiscreteInputs %#v\r\n", results)
+				fmt.Printf("ReadDiscreteInputs %#v\r\n", results)
 
-			// 	time.Sleep(time.Second * 2)
-			// }
+				time.Sleep(time.Second * 2)
+			}
 		} else if mb_config.Modbus_mode == "ascii" {
 			fmt.Println("Modbus 采用 ASCII 协议通信")
 
 			// 开始启动 Modbus 的 ASCII 模式进行连接
-			p := modbus.NewASCIIClientProvider()
+			p := modbus.NewASCIIClientProvider(modbus.WithEnableLogger(),
+				modbus.WithSerialConfig(serial.Config{
+					Address:  rs485_2_config.Com_port,
+					BaudRate: rs485_2_config.Com_baudrate,
+					DataBits: rs485_2_config.Com_databits,
+					StopBits: rs485_2_config.Com_stopbits,
+					Parity:   rs485_2_config.Com_parity,
+					Timeout:  modbus.SerialDefaultTimeout,
+					RS485: serial.RS485Config{
+						Enabled:            false,
+						DelayRtsBeforeSend: 0,
+						DelayRtsAfterSend:  0,
+						RtsHighDuringSend:  false,
+						RtsHighAfterSend:   false,
+						RxDuringTx:         false,
+					},
+				}))
 
 			client := modbus.NewClient(p)
 			err := client.Connect()
@@ -121,6 +155,17 @@ func Modbus_init() error {
 			defer client.Close()
 
 			fmt.Println("连接成功，开始工作...")
+
+			for {
+				results, err := client.ReadHoldingRegisters(1, 1, 10)
+				if err != nil {
+					fmt.Println(err.Error())
+				}
+
+				fmt.Printf("ReadDiscreteInputs %#v\r\n", results)
+
+				time.Sleep(time.Second * 2)
+			}
 		} else {
 			fmt.Println("Modbus 模式:", mb_config.Modbus_mode, "解析错误！请检查 json 配置！")
 		}
