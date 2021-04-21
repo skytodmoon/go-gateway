@@ -128,6 +128,7 @@ func Modbus_init() error {
 			fmt.Println("Modbus 采用 ASCII 协议通信")
 
 			// 开始启动 Modbus 的 ASCII 模式进行连接
+
 			p := modbus.NewASCIIClientProvider(modbus.WithEnableLogger(),
 				modbus.WithSerialConfig(serial.Config{
 					Address:  rs485_2_config.Com_port,

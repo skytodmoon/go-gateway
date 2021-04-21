@@ -12,6 +12,8 @@
     "modbus_tcp_addr":"192.168.1.14",
     "modbus_tcp_port":"139",
 
+    "modbus_func":1,
+
     "modbus_slave_id_1":13,
     "modbus_slave_id_2":14,
     "modbus_slave_id_3":14,
@@ -23,14 +25,14 @@
     
 
     "rs232_enable":true,
-    "rs232_port":"/dev/ttymxc0",
+    "rs232_port":"/dev/ttyAMA0",
     "rs232_baudrate":115200,
     "rs232_databits":8,
     "rs232_stopbits":0,
     "rs232_parity":"N",
 
     "rs485_1_enable":true,
-    "rs485_1_port":"COM14",
+    "rs485_1_port":"/dev/ttyAMA0",
     "rs485_1_baudrate":9600,
     "rs485_1_databits":8,
     "rs485_1_stopbits":0,

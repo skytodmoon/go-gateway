@@ -2,10 +2,16 @@
 ## explicit
 github.com/eclipse/paho.mqtt.golang
 github.com/eclipse/paho.mqtt.golang/packets
+# github.com/goburrow/modbus v0.1.0
+## explicit
 # github.com/goburrow/serial v0.1.0
+## explicit
 github.com/goburrow/serial
 # github.com/gorilla/websocket v1.4.2
 github.com/gorilla/websocket
+# github.com/tbrandon/mbserver v0.0.0-20210320091329-a1f8ae952881
+## explicit
+github.com/tbrandon/mbserver
 # github.com/thinkgos/gomodbus/v2 v2.2.2
 ## explicit
 github.com/thinkgos/gomodbus/v2

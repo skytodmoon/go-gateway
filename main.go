@@ -21,7 +21,8 @@ func main() {
 	// 展示公司logo
 	show_logo()
 
-	err := modbus_mod.Modbus_init()
+	//err := modbus_mod.Modbus_init()
+	err := modbus_mod.Modbus_server_init()
 	if err != nil {
 		fmt.Println("Modbus 初始化失败~")
 	}

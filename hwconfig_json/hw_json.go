@@ -48,10 +48,12 @@ type Com_can struct {
 
 // Modbus 参数 结构体
 type Modbus_config struct {
+	// Modbus 基本参数
 	Modbus_enable    bool        `json:"modbus_enable"`
 	Modbus_mode      interface{} `json:"modbus_mode"`
 	Modbus_timeout   int         `json:"modbus_timeout"`
 	Modbus_device_id interface{} `json:"modbus_device_id"`
+	Modbus_func      int         `json:"modbus_func"`
 	// TCP 参数
 	Modbus_tcp_addr string `json:"modbus_tcp_addr"`
 	Modbus_tcp_port string `json:"modbus_tcp_port"`
