@@ -48,7 +48,14 @@ type Modbus_config struct {
 
 // MQTT 参数 结构体
 type Mqtt_config struct {
-	Mqtt_version interface{} `json:"mqtt_version"`
+	Mqtt_version   string `json:"mqtt_version"`
+	Mqtt_broker    string `json:"mqtt_broker"`
+	Mqtt_port      int    `json:"mqtt_port"`
+	Mqtt_use_tls   bool   `json:"mqtt_use_tls"`
+	Mqtt_client_id string `json:"mqtt_clinet_id"`
+	Mqtt_user_name string `json:"mqtt_user_name"`
+	Mqtt_user_pass string `json:"mqtt_user_pass"`
+	Mqtt_topic     string `json:"mqtt_topic"`
 }
 
 // 解析 hwconfig.json 文件

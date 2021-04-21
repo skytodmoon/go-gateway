@@ -1,5 +1,14 @@
+# github.com/eclipse/paho.mqtt.golang v1.3.3
+## explicit
+github.com/eclipse/paho.mqtt.golang
+github.com/eclipse/paho.mqtt.golang/packets
 # github.com/goburrow/serial v0.1.0
 github.com/goburrow/serial
+# github.com/gorilla/websocket v1.4.2
+github.com/gorilla/websocket
 # github.com/thinkgos/gomodbus/v2 v2.2.2
 ## explicit
 github.com/thinkgos/gomodbus/v2
+# golang.org/x/net v0.0.0-20200425230154-ff2c4b7c35a0
+golang.org/x/net/internal/socks
+golang.org/x/net/proxy
