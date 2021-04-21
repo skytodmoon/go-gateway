@@ -36,10 +36,19 @@ type Com_rs485_2 struct {
 	Com_stopbits interface{} `json:"rs485_2_stopbits"`
 }
 
+// Modbus 参数 结构体
 type Modbus_config struct {
 	Modbus_enable    interface{} `json:"modbus_enable"`
 	Modbus_mode      interface{} `json:"modbus_mode"`
 	Modbus_device_id interface{} `json:"modbus_device_id"`
+	// TCP 参数
+	Modbus_tcp_addr string `json:"modbus_tcp_addr"`
+	Modbus_tcp_port string `json:"modbus_tcp_port"`
+}
+
+// MQTT 参数 结构体
+type Mqtt_config struct {
+	Mqtt_version interface{} `json:"mqtt_version"`
 }
 
 // 解析 hwconfig.json 文件

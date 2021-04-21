@@ -1,7 +1,15 @@
 {
+    "sys_sw_ver":"0.0.4",
+    "sys_hw_ver":"0.0.1",
+    "sys_hw_sn":"ABCDEFG",
+
+    "sys_fw_flag_update":false,
+    
     "modbus_enable":true,
-    "modbus_mode":"rtu",
+    "modbus_mode":"tcp",
     "modbus_device_id":"77",
+    "modbus_tcp_addr":"192.168.1.14",
+    "modbus_tcp_port":"139",
     
 
     "rs232_enable":true,
@@ -23,5 +31,38 @@
     "rs485_2_stopbits":"0",
 
     "can_enable":false,
-    "can_port":"/dev/can0"
+    "can_port":"/dev/can0",
+
+    "led_enable":false,
+
+    "lan_1_enable":false,
+    "lan_1_device":"/dev/lan0",
+    "lan_1_ipv4_use":true,
+    "lan_1_ipadrr":"192.168.1.1",
+    "lan_1_mask":"255.255.255.0",
+    "lan_1_gateway":"192.158.1.1",
+    "lan_1_ipv6_use":false,
+
+    "lan_2_enable":false,
+    "lan_2_device":"/dev/lan1",
+    "lan_2_ipv4_use":true,
+    "lan_2_ipadrr":"192.168.1.1",
+    "lan_2_mask":"255.255.255.0",
+    "lan_2_gateway":"192.158.1.1",
+    "lan_2_ipv6_use":false,
+
+    "wifi_enable":false,
+    "wifi_device":"/dev/wlan0",
+    "wifi_ssid":"TheNewWork-1F",
+    "wifi_psk":"05925191882",
+    "wifi_sec_mode":"WPA",
+
+    "nbiot_enable":false,
+    "nbiot_device":"/dev/nb0",
+
+    "ble_enable":false,
+    "ble_device":"/dev/bt0",
+
+    "mqtt_version":"V3"
+
 }
